@@ -1,4 +1,4 @@
-name: Release
+name: Release Gobrick
 # Invocable as a reusable workflow
 # Can be manually triggered
 on:
@@ -8,4 +8,4 @@ on:
 jobs:
   csm-release:
     uses: dell/common-github-actions/.github/workflows/csm-release-libs.yaml@reusuable-release-workflow
-    name: Release Gobrick
+    name: Release Libs
