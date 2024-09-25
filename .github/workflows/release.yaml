@@ -12,4 +12,4 @@ on:
 jobs:
   csm-release:
     uses: dell/common-github-actions/.github/workflows/csm-release-libs.yaml@feature/lib-release-automation
-    name: Release Libs
+    name: Release Go Client Libraries
