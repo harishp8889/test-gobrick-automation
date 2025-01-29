@@ -6,14 +6,14 @@ on:
   workflow_dispatch:
     inputs:
       option:
-          description: 'Select version to release'
-          required: true
-          type: choice
-          default: 'minor'
-          options:
-            - major
-            - minor
-            - patch
+        description: 'Select version to release'
+        required: true
+        type: choice
+        default: 'minor'
+        options:
+          - major
+          - minor
+          - patch
 jobs:
   csm-release:
     uses: harishp8889/test-common-github-actions/.github/workflows/csm-release-libs.yaml@main
