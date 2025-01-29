@@ -16,7 +16,7 @@ on:
             - patch
 jobs:
   csm-release:
-    uses: dell/common-github-actions/.github/workflows/csm-release-libs.yaml@feature/release-creator
+    uses: harishp8889/test-common-github-actions/.github/workflows/csm-release-libs.yaml@main
     name: Release Go Client Libraries
     with:
       version: ${{ github.event.inputs.option }}
