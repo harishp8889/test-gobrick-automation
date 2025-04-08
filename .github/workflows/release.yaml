@@ -7,7 +7,7 @@ on: # yamllint disable-line rule:truthy
     inputs:
       option:
         description: "Select version to release"
-        required: false
+        required: true
         type: choice
         default: "minor"
         options:
