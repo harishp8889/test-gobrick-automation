@@ -14,7 +14,7 @@ on: # yamllint disable-line rule:truthy
           - major
           - minor
           - patch
-          - ""
+          # - "n-1/n-2 patch (Provide input in the below box)"
       version:
         description: "Patch version to release. example: 2.1.x (For n-1 and n-2 versions only)"
         required: false
@@ -32,5 +32,5 @@ jobs:
     uses: dell/common-github-actions/.github/workflows/csm-release-libs.yaml@bugfix/patch-release
     name: Release Go Client Libraries
     with:
-      version: "${{ github.event.inputs.option || github.event.inputs.version || 'minor' }}"
+      version: "${{ github.event.inputs.version || github.event.inputs.option || 'minor' }}"
     secrets: inherit
