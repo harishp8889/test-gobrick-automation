@@ -32,5 +32,5 @@ jobs:
     uses: dell/common-github-actions/.github/workflows/csm-release-libs.yaml@bugfix/patch-release
     name: Release Go Client Libraries
     with:
-      version: "${{ github.event.inputs.version != '' ? github.event.inputs.version : (github.event.inputs.option || 'minor') }}"
+      version: "${{ github.event.inputs.version != '' && github.event.inputs.version : (github.event.inputs.option || 'minor') }}"
     secrets: inherit
