@@ -32,22 +32,19 @@ jobs:
         run: |
           if [[ "${{ github.event.inputs.version }}" != "" && "${{ github.event.inputs.option }}" == "n-1/n-2 patch (Provide input in the below box)" ]]; then
             # if both version and option are provided, then version takes precedence i.e. patch release for n-1/n-2
-            echo "versionEnv=v${{ github.event.inputs.version }}" >> $GITHUB_ENV
-            echo "versionEnv=${{ env.version }}"
+            echo "versionEnv=v${{ github.event.inputs.version }}" >> $GITHUB_ENV            
             return 0
           fi
 
           if [[ "${{ github.event.inputs.option }}" != "n-1/n-2 patch (Provide input in the below box)" ]]; then
             # if only option is provided, then option takes precedence i.e. minor, major or patch release
-            echo "versionEnv=${{ github.event.inputs.option }}" >> $GITHUB_ENV
-            echo "versionEnv=${{ env.version }}"
+            echo "versionEnv=${{ github.event.inputs.option }}" >> $GITHUB_ENV            
             return 0
           fi
 
           else
             # if neither option nor version is provided, then minor release is taken by default (Auto-release)
-            echo "versionEnv=minor" >> $GITHUB_ENV
-          echo "versionEnv=${{ env.version }}"
+            echo "versionEnv=minor" >> $GITHUB_ENV          
 
   # This job is to update the commits of the dependent libraries for Gobrick library
   # package-update:
@@ -55,9 +52,9 @@ jobs:
   #   name: Dell Libraries Update
   #   secrets: inherit
   csm-release:
-    # needs: [package-update]
+    # needs: [package-update, process-inputs]
     uses: dell/common-github-actions/.github/workflows/csm-release-libs.yaml@bugfix/patch-release
     name: Release Go Client Libraries
     with:
-      version: "${{ env.versionEnv }}"
+      version: "${{ github.event.inputs.versionEnv }}"
     secrets: inherit
