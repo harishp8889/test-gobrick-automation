@@ -14,6 +14,7 @@ on: # yamllint disable-line rule:truthy
           - major
           - minor
           - patch
+          - ""
       version:
         description: "Patch version to release. example: 2.1.x (For n-1 and n-2 versions only)"
         required: false
