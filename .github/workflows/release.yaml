@@ -14,7 +14,7 @@ on: # yamllint disable-line rule:truthy
           - major
           - minor
           - patch
-          # - "n-1/n-2 patch (Provide input in the below box)"
+          - "n-1/n-2 patch (Provide input in the below box)"
       version:
         description: "Patch version to release. example: 2.1.x (For n-1 and n-2 versions only)"
         required: false
@@ -22,6 +22,33 @@ on: # yamllint disable-line rule:truthy
   repository_dispatch:
     types: [release-go-libs]
 jobs:
+  process-inputs:
+    name: Process Inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Process input
+        id: process
+        shell: bash
+        run: |
+          if [[ "${{ github.event.inputs.version }}" != "" && "${{ github.event.inputs.option }}" == "n-1/n-2 patch (Provide input in the below box)" ]]; then
+            # if both version and option are provided, then version takes precedence i.e. patch release for n-1/n-2
+            echo "versionEnv=v${{ github.event.inputs.version }}" >> $GITHUB_ENV
+            echo "versionEnv=${{ env.version }}"
+            return 0
+          fi
+
+          if [[ "${{ github.event.inputs.option }}" != "n-1/n-2 patch (Provide input in the below box)" ]]; then
+            # if only option is provided, then option takes precedence i.e. minor, major or patch release
+            echo "versionEnv=${{ github.event.inputs.option }}" >> $GITHUB_ENV
+            echo "versionEnv=${{ env.version }}"
+            return 0
+          fi
+
+          else
+            # if neither option nor version is provided, then minor release is taken by default (Auto-release)
+            echo "versionEnv=minor" >> $GITHUB_ENV
+          echo "versionEnv=${{ env.version }}"
+
   # This job is to update the commits of the dependent libraries for Gobrick library
   # package-update:
   #   uses: dell/common-github-actions/.github/workflows/update-libraries.yml@main
@@ -32,5 +59,5 @@ jobs:
     uses: dell/common-github-actions/.github/workflows/csm-release-libs.yaml@bugfix/patch-release
     name: Release Go Client Libraries
     with:
-      version: "${{ github.event.inputs.version != '' && github.event.inputs.version || github.event.inputs.option || 'minor' }}"
+      version: "${{ env.versionEnv }}"
     secrets: inherit
