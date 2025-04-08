@@ -25,6 +25,8 @@ jobs:
   process-inputs:
     name: Process Inputs
     runs-on: ubuntu-latest
+    outputs:
+      processedVersion: ${{ steps.set-version.outputs.versionEnv }}
     steps:
       - name: Process input
         id: set-version
@@ -54,9 +56,9 @@ jobs:
   #   secrets: inherit
   csm-release:
     # needs: [package-update, process-inputs]
-    needs: [process-inputs]
+    needs: [process-inputs]    
     uses: dell/common-github-actions/.github/workflows/csm-release-libs.yaml@bugfix/patch-release
     name: Release Go Client Libraries
     with:
-      version: "${{ needs.process-inputs.result.versionEnv }}"
+      version: "${{ needs.process-inputs.outputs.processedVersion }}"
     secrets: inherit
